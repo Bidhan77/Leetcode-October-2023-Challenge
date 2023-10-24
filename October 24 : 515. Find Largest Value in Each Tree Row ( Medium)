@@ -1,0 +1,41 @@
+class Solution {
+    class Pair{
+        TreeNode v;
+        int level;
+        Pair(TreeNode v,int level){
+            this.v=v;
+            this.level=level;
+        }
+    }
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> list =new ArrayList<>();
+        if(root==null){
+            return new ArrayList<>();
+        }
+        ArrayDeque <Pair> q=new ArrayDeque<>();
+        int level=0;
+        int max=Integer.MIN_VALUE;
+        q.add(new Pair(root,0));
+        
+        while(q.size()!=0){
+            Pair rem=q.remove();
+            if(level==rem.level){
+                max=Math.max(rem.v.val,max);
+            }
+            else if(level!=rem.level){
+                list.add(max);
+                max=rem.v.val;
+                level++;
+            }
+            
+            if(rem.v.left!=null){
+                q.add(new Pair(rem.v.left,rem.level+1));
+            }
+            if(rem.v.right!=null){
+                q.add(new Pair(rem.v.right,rem.level+1));
+            }
+        }
+        list.add(max); //as last lyer would be added
+        return list;
+    }
+}
